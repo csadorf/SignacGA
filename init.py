@@ -38,7 +38,9 @@ def randomString(length):
 def main(n, seed):
     project = signac.init_project("HelloWorldGA")
     # Test the project document
-    project.document.generation = 0
+    # project.document.generation = 0
+    lDict = {'n': 0}
+    project.document.generation = lDict
     statusDict = dict()
     statusDict['cost'] = True
     statusDict['sort'] = False

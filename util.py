@@ -22,7 +22,7 @@ def _mutate(code, probability):
     """
 
     if np.random.rand() > probability:
-        return None
+        return code
 
     index = int(np.random.random() * len(code))
     direction = -1 if np.random.random() > 0.5 else 1
