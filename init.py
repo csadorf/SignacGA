@@ -37,15 +37,15 @@ def randomString(length):
 
 def main(n, seed):
     project = signac.init_project("HelloWorldGA")
+    # create the master job
+    statepoint = dict(master=True)
+    project.open_job(statepoint).init()
+    lJob = project.open_job(statepoint)
+    lJob.document.generation = 0
     # Test the project document
     # project.document.generation = 0
-    lDict = {'n': 0}
+    lDict = {'n': 0, 'members': None}
     project.document.generation = lDict
-    statusDict = dict()
-    statusDict['cost'] = True
-    statusDict['sort'] = False
-    statusDict['generate'] = False
-    project.document.status = statusDict
     # set the random seed
     np.random.seed(seed=seed)
     for i in range(n):
@@ -64,7 +64,8 @@ def main(n, seed):
         statepoint = dict(length=length,
                           goal=goal,
                           code=lCode,
-                          seed=seed,)
+                          seed=seed,
+                          master=False)
         # create the job
         project.open_job(statepoint).init()
         lJob = project.open_job(statepoint)
