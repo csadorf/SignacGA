@@ -38,7 +38,8 @@ def randomString(length):
 def main(n, seed):
     project = signac.init_project("HelloWorldGA")
     # create the master job
-    statepoint = dict(master=True)
+    goal = 'Hello, World!'
+    statepoint = dict(master=True, goal=goal, seed=seed)
     project.open_job(statepoint).init()
     lJob = project.open_job(statepoint)
     lJob.document.generation = 0
@@ -51,7 +52,6 @@ def main(n, seed):
     for i in range(n):
         # generate a random string
         # a length of 13 is the length of 'Hello, World!'
-        goal = 'Hello, World!'
         length = len(goal)
         lCode = randomString(length)
         # cost of the code can't be part of the statepoint
