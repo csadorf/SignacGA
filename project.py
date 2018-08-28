@@ -13,6 +13,7 @@ from flow import FlowProject
 import util
 import numpy as np
 import os.path
+import time
 
 MAX_NUM_GENERATIONS = 10000
 
@@ -91,8 +92,12 @@ def calcCost(job):
     # cost = int(np.power(np.sum(costCode - costGoal), 2))
     cost = int(np.sum(np.power(costCode - costGoal, 2)))
     job.document.cost = cost
+    # time.sleep(0.5)
     if job.document.cost == 0:
         job._project.document.optimized = True
+        f = open("optimized.txt", "w")
+        f.write("optimized\n")
+        f.close()
 
 @Project.operation
 @Project.pre(lambda job: not optimized(job))
@@ -109,6 +114,7 @@ def nextGeneration(job):
     5. Removes "old" jobs because the time to search/index takes longer and longer
        and in this case, we don't really need to keep all of them around
     """
+    startTime = time.time()
     project = job._project
     gNum = project.document.generation.n
 
@@ -179,6 +185,10 @@ def nextGeneration(job):
     oldJobs = project.find_jobs(filter={'master': False}, doc_filter={'generation': {'$lt': gNum-2}})
     for j in oldJobs:
         j.remove()
+
+    stopTime = time.time()
+    project.document.time[str(gNum)] = stopTime
+    project.document.njobs[str(gNum)] = len(project.find_jobs())
 
 if __name__ == "__main__":
     Project().main()

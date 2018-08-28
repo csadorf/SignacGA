@@ -47,6 +47,8 @@ def main(n, seed):
     # project.document.generation = 0
     lDict = {'n': 0, 'members': None}
     project.document.generation = lDict
+    project.document.time = dict()
+    project.document.njobs = dict()
     # set the random seed
     np.random.seed(seed=seed)
     for i in range(n):
