@@ -8,7 +8,7 @@ command line with
 
 See also: $ python src/project.py --help
 """
-
+from signac.core.jsondict import JSONDict
 from flow import FlowProject
 import util
 import numpy as np
@@ -16,6 +16,12 @@ import os.path
 import time
 
 MAX_NUM_GENERATIONS = 10000
+
+
+benchmark_doc = JSONDict(filename='benchmark.json', write_concern=True)
+benchmark_doc.setdefault('time', dict())
+benchmark_doc.setdefault('njobs', dict())
+
 
 def isMaster(job):
     """
@@ -187,8 +193,10 @@ def nextGeneration(job):
         j.remove()
 
     stopTime = time.time()
-    project.document.time[str(gNum)] = stopTime
-    project.document.njobs[str(gNum)] = len(project.find_jobs())
+    benchmark_doc.time[str(gNum)] = stopTime
+    benchmark_doc.njobs[str(gNum)] = len(project.find_jobs())
+
+
 
 if __name__ == "__main__":
     Project().main()

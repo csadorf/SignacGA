@@ -12,6 +12,7 @@ import argparse
 from hashlib import sha1
 
 import signac
+from signac.core.jsondict import JSONDict
 import numpy as np
 
 def _calcCost(code, goal):
@@ -73,6 +74,11 @@ def main(n, seed):
         lJob = project.open_job(statepoint)
         lJob.document.generation = 0
         # lJob.document.eligible = True
+
+    # Use dedicated document for benchmark data
+    benchmark_doc = JSONDict(filename='benchmark.json', write_concern=True)
+    benchmark_doc.setdefault('time', dict())
+    benchmark_doc.setdefault('njobs', dict())
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
